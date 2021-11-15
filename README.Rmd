@@ -25,13 +25,17 @@ The goal of velocimeter is to calculate terminal velocity using a physical model
 You can install the development version of velocimeter like so:
 
 ``` r
-# Download the repository from GitHub
-# https://github.com/jinleizhu/velocimeter
+# 1. Code -> Download ZIP from GitHub repository (https://github.com/jinleizhu/velocimeter)
+# 2. Unzip the file
+# 3. Open velocimeter.Rproj in Rstudio
+# 4. Prior to first testing, click the "Build" pane (upper right), and then "Install and Restart"
+
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to calculate terminal velocity using
+the physical model for free fall with air resistance (shown in the "test.R" script):
 
 ```{r example}
 library(velocimeter)
