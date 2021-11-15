@@ -1,4 +1,7 @@
-# NOTE: Prior to first testing, click the "Build" pane (upper right), and then "Install and Restart"
+# install package
+install.packages("devtools")
+library(devtools)
+install_github("jinleizhu/velocimeter")
 # test
 library(velocimeter)
 calculate.terminal.velocity.phys(file = "terminal_velocity_analysis20219191543/agri-short_00000.aviResults.txt",

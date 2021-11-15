@@ -14,10 +14,9 @@ physical model for free fall with air resistance.
 You can install the development version of velocimeter like so:
 
 ``` r
-# 1. Code -> Download ZIP from GitHub repository (https://github.com/jinleizhu/velocimeter)
-# 2. Unzip the file
-# 3. Open velocimeter.Rproj in Rstudio
-# 4. Prior to first testing, click the "Build" pane (upper right), and then "Install and Restart"
+# install.packages("devtools")
+# library(devtools)
+# install_github("jinleizhu/velocimeter")
 ```
 
 ## Example
