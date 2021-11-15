@@ -15,7 +15,7 @@
 #' library(velocimeter)
 #' # not run
 #' # calculate.terminal.velocity.phys(file = "terminal_velocity_analysis20219191543/agri-short_00000.aviResults.txt",
-#' min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
+#' # min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
 
 calculate.terminal.velocity.phys <- function(file,min.size,min.circularity,fps=130,tubelength){
   # load the conversion functions:
