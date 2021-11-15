@@ -32,5 +32,6 @@ The function allows one to calculate terminal velocity using a physical model fo
 \examples{
 library(velocimeter)
 # not run
-# calculate.terminal.velocity.phys(file = "terminal_velocity_analysis20219191543/agri-short_00000.aviResults.txt",min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
+# calculate.terminal.velocity.phys(file = "terminal_velocity_analysis20219191543/agri-short_00000.aviResults.txt",
+min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
 }

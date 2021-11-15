@@ -14,22 +14,35 @@
 #' @examples
 #' library(velocimeter)
 #' # not run
-#' # calculate.terminal.velocity.phys(file = "terminal_velocity_analysis20219191543/agri-short_00000.aviResults.txt",min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
+#' # calculate.terminal.velocity.phys(file = "terminal_velocity_analysis20219191543/agri-short_00000.aviResults.txt",
+#' min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
 
 calculate.terminal.velocity.phys <- function(file,min.size,min.circularity,fps=130,tubelength){
+  # load the conversion functions:
   load("./inst/extdata/calib.Robj")
   message<-""
   dt<-1/fps #time interval between images
   dat<-read.table(file=file,header=T)
+
+  # select putative falling objects
   dat<-dat[dat$Circ.>=min.circularity,]
   dat<-dat[dat$Area>=min.size,]
+
+  # further select data based on range limits in the mirror view
   dat<-dat[(dat$XM>200)&(dat$XM<800)|(dat$XM>900&dat$XM<1850),]
   dat<-dat[dat$YM<1000,]
+
+  # select data for direct view
   directdat<-dat[dat$XM>900,]
+
+  # select data for mirror view
   mirrordat<-dat[dat$XM<820,]
+
+  # time values in direct and mirror views
   directtimevals<-unique(directdat$Slice)
   mirrortimevals<-unique(mirrordat$Slice)
   timevals<-directtimevals[directtimevals%in%mirrortimevals]
+
   #select the longest sequence of consecutive images
   timevals<-sort(timevals)
   time.rle<-rle(diff(timevals))
@@ -54,20 +67,28 @@ calculate.terminal.velocity.phys <- function(file,min.size,min.circularity,fps=1
     directdat<-directdat[!duplicated(directdat$Slice),]
     if (max(table(mirrordat$Slice))>1) message<-paste(message,"Warning: more than one object detected in mirror image")
     mirrordat<-mirrordat[!duplicated(mirrordat$Slice),]
+
+    # image coordinates of direct (front) view
     names(directdat)[2:3]<-c("xf","yf")
+
+    # image coordinates of mirror view
     names(mirrordat)[2:3]<-c("xm","ym")
 
     imagedat<-merge(directdat,mirrordat,by="Slice",suffixes=c("",".mirror"))
     if (any(abs(imagedat$yf-imagedat$ym)>250)) message<-paste(message,"Warning: direct and mirror image may not refer to same object",sep="  ")
+
+    # convert the image coordinates to real coordinates in 3-d space
     imagedat$x<-predict(calib$xcalib,imagedat)
-    imagedat$y<-predict(calib$ycalib,imagedat)
+    imagedat$y<-predict(calib$ycalib,imagedat)#note in the paper this is the z axis
     imagedat$z<-predict(calib$zcalib,imagedat)
     imagedat$t<-imagedat$Slice*dt
+
+    # (traditional) method 1: simple linear regression model
     linfit<-lm(y~t,imagedat)
     if (summary(linfit)$r.squared<0.999) message<-paste(message,"Warning: seed may not yet have reached terminal velocity",sep="  ")
     vt.lin<- (-coef(linfit)[2])*0.01 # in m/s
 
-    # calculate vt with physical model
+    # method 2: calculate vt with the physical model of free fall with air resistance
     y.obs<- -(tubelength-imagedat$y*0.01) # adding the 0/0 point not necessary; all in m now
     ts<-imagedat$t
     dats <- data.frame(t=ts,y.obs=y.obs)
@@ -79,5 +100,6 @@ calculate.terminal.velocity.phys <- function(file,min.size,min.circularity,fps=1
 
     if (y0.phys > 0.1){message<-paste("Warning: Y0 10cm or larger",message,sep="  ")}
   }
+  # save the results
   return(list(vt.lin.mps=vt.lin,message=message,linfit=linfit,physfit=physfit,imagedat=imagedat,vt.phys.mps=vt.phys,y0.phys.m=y0.phys,rsq.cond.phys=rsq.cond.phys))
 }
