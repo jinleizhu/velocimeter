@@ -22,13 +22,14 @@ You can install the development version of velocimeter like so:
 ## Example
 
 This is a basic example which shows you how to calculate terminal
-velocity using the physical model for free fall with air resistance
-(shown in the “test.R” script):
+velocity using the physical model for free fall with air resistance:
 
 ``` r
 library(velocimeter)
-calculate.terminal.velocity.phys(file = "terminal_velocity_analysis20219191543/agri-short_00000.aviResults.txt",
-                                 min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
+calculate.terminal.velocity.phys(file =
+paste0(.libPaths()[which("velocimeter"%in%list.files(.libPaths()))],
+"/velocimeter/extdata/agri-short_00000.aviResults.txt"),
+min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
 #> $vt.lin.mps
 #>        t 
 #> 3.678817 
@@ -102,4 +103,6 @@ calculate.terminal.velocity.phys(file = "terminal_velocity_analysis20219191543/a
 #> 
 #> $rsq.cond.phys
 #> [1] 0.9999791
+
+# NOTE: When using the function, you should change the path to your .txt files.
 ```
