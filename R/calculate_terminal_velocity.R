@@ -19,7 +19,7 @@
 
 calculate.terminal.velocity.phys <- function(file,min.size,min.circularity,fps=130,tubelength){
   # load the conversion functions:
-  load("./extdata/calib.Robj")
+  load(paste0(.libPaths()[which("velocimeter"%in%list.files(.libPaths()))],"/velocimeter/extdata/calib.Robj"))
   message<-""
   dt<-1/fps #time interval between images
   dat<-read.table(file=file,header=T)
