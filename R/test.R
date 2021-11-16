@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-calculate.terminal.velocity.test <- function(file= "./inst/extdata/agri-short_00000.aviResults.txt"){
+calculate.terminal.velocity.test <- function(file= paste0(.libPaths()[which("velocimeter"%in%list.files(.libPaths()))],"/velocimeter/extdata/agri-short_00000.aviResults.txt")){
   return(calculate.terminal.velocity.phys(file = file,
                                           min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075))
 }
