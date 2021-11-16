@@ -19,7 +19,7 @@
 
 calculate.terminal.velocity.phys <- function(file,min.size,min.circularity,fps=130,tubelength){
   # load the conversion functions:
-  load("./inst/extdata/calib.Robj")
+  load("./extdata/calib.Robj")
   message<-""
   dt<-1/fps #time interval between images
   dat<-read.table(file=file,header=T)
