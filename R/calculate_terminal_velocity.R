@@ -25,26 +25,20 @@ calculate.terminal.velocity.phys <- function(file,min.size,min.circularity,fps=1
   message<-""
   dt<-1/fps #time interval between images
   dat<-read.table(file=file,header=T)
-
   # select putative falling objects
   dat<-dat[dat$Circ.>=min.circularity,]
   dat<-dat[dat$Area>=min.size,]
-
   # further select data based on range limits in the mirror view
   dat<-dat[(dat$XM>200)&(dat$XM<800)|(dat$XM>900&dat$XM<1850),]
   dat<-dat[dat$YM<1000,]
-
   # select data for direct view
   directdat<-dat[dat$XM>900,]
-
   # select data for mirror view
   mirrordat<-dat[dat$XM<820,]
-
   # time values in direct and mirror views
   directtimevals<-unique(directdat$Slice)
   mirrortimevals<-unique(mirrordat$Slice)
   timevals<-directtimevals[directtimevals%in%mirrortimevals]
-
   #select the longest sequence of consecutive images
   timevals<-sort(timevals)
   time.rle<-rle(diff(timevals))
@@ -55,13 +49,11 @@ calculate.terminal.velocity.phys <- function(file,min.size,min.circularity,fps=1
   time.period<-time.rle1$period[which.max(time.rle1$length)]
   period.startend<-startendtimes[c(time.period,time.period+1)]
   timevals<-timevals[period.startend[1]:period.startend[2]]
-  if (length(timevals)==0)
-  {
+  if (length(timevals)==0) {
     message<-paste(message,"Error: no data from consecutive images",sep="  ")
     vtfit<-NULL
     vt<-NA
-  } else
-  {
+  } else {
     directdat<-directdat[(directdat$Slice%in%timevals),]
     mirrordat<-mirrordat[(mirrordat$Slice%in%timevals),]
     #make sure that there is only a single object in each time step (this works because dat was sorted by decreasing Area)
@@ -69,39 +61,45 @@ calculate.terminal.velocity.phys <- function(file,min.size,min.circularity,fps=1
     directdat<-directdat[!duplicated(directdat$Slice),]
     if (max(table(mirrordat$Slice))>1) message<-paste(message,"Warning: more than one object detected in mirror image")
     mirrordat<-mirrordat[!duplicated(mirrordat$Slice),]
-
-    # image coordinates of direct (front) view
-    names(directdat)[2:3]<-c("xf","yf")
-
+    # image coordinates of direct view
+    names(directdat)[2:3]<-c("xd","zd")
     # image coordinates of mirror view
-    names(mirrordat)[2:3]<-c("xm","ym")
+    names(mirrordat)[2:3]<-c("ym","zm")
 
     imagedat<-merge(directdat,mirrordat,by="Slice",suffixes=c("",".mirror"))
-    if (any(abs(imagedat$yf-imagedat$ym)>250)) message<-paste(message,"Warning: direct and mirror image may not refer to same object",sep="  ")
+    if (any(abs(imagedat$yf-imagedat$ym)>250)) {
+      message<-paste(message,"Warning: direct and mirror image may not refer to same object",sep="  ")
+    }
 
     # convert the image coordinates to real coordinates in 3-d space
     imagedat$x<-predict(calib$xcalib,imagedat)
-    imagedat$y<-predict(calib$ycalib,imagedat)#note in the paper this is the z axis
+    imagedat$y<-predict(calib$ycalib,imagedat)
     imagedat$z<-predict(calib$zcalib,imagedat)
     imagedat$t<-imagedat$Slice*dt
 
     # (traditional) method 1: simple linear regression model
-    linfit<-lm(y~t,imagedat)
-    if (summary(linfit)$r.squared<0.999) message<-paste(message,"Warning: seed may not yet have reached terminal velocity",sep="  ")
+    linfit<-lm(z~t,imagedat)
+    if (summary(linfit)$r.squared<0.999) {
+      message<-paste(message,"Warning: seed may not yet have reached terminal velocity",sep="  ")
+    }
     vt.lin<- (-coef(linfit)[2])*0.01 # in m/s
 
     # method 2: calculate vt with the physical model of free fall with air resistance
-    y.obs<- -(tubelength-imagedat$y*0.01) # adding the 0/0 point not necessary; all in m now
+    # Equation (2.58) from “Classical Mechanics” by John R. Taylor
+    z.obs<- -(tubelength-imagedat$z*0.01) # adding the 0/0 point not necessary; all in m now
     ts<-imagedat$t
-    dats <- data.frame(t=ts,y.obs=y.obs)
-    physfit <- nls(y.obs ~ y0 - exp(logvt)^2/9.80665 * log(cosh(9.80665*(t)/exp(logvt))),
-                   data=dats,start=list(logvt=log(2),y0=0))
-    vt.phys <- exp(coef(physfit)[1]);
-    y0.phys <- coef(physfit)[2];
-    rsq.cond.phys <- (1 - var(residuals(physfit))/var(dats$y.obs))
+    dats <- data.frame(t=ts,z.obs=z.obs)
+    # fit the physical model for free fall with air resistance:
+    physfit <- nls(z.obs ~ z0 - vt^2/9.80665 * log(cosh(9.80665*t/vt)),
+                   data=dats,start=list(vt=2,z0=0))
+    vt.phys <- coef(physfit)[1]
+    z0.phys <- coef(physfit)[2]
+    rsq.cond.phys <- (1 - var(residuals(physfit))/var(dats$z.obs))
 
-    if (y0.phys > 0.1){message<-paste("Warning: Y0 10cm or larger",message,sep="  ")}
+    if (z0.phys > 0.1) {
+      message<-paste("Warning: Z0 10cm or larger",message,sep="  ")
+    }
   }
   # save the results
-  return(list(vt.lin.mps=vt.lin,message=message,linfit=linfit,physfit=physfit,imagedat=imagedat,vt.phys.mps=vt.phys,y0.phys.m=y0.phys,rsq.cond.phys=rsq.cond.phys))
+  return(list(vt.lin.mps=vt.lin,message=message,linfit=linfit,physfit=physfit,imagedat=imagedat,vt.phys.mps=vt.phys,z0.phys.m=z0.phys,rsq.cond.phys=rsq.cond.phys))
 }
