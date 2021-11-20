@@ -22,10 +22,12 @@ You can install the development version of velocimeter like so:
 ## Example
 
 This is a basic example which shows you how to calculate terminal
-velocity using the physical model for free fall with air resistance:
+velocity using the physical model for free fall with air resistance, and
+how to diagnose the measurements of terminal velocity.
 
 ``` r
 library(velocimeter)
+# NOTE: When using the function, you should change the path to your .txt files.
 calculate.terminal.velocity.phys(file =
 paste0(.libPaths()[which("velocimeter"%in%list.files(.libPaths()))],
 "/velocimeter/extdata/agri-short_00000.aviResults.txt"),
@@ -104,5 +106,10 @@ min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
 #> $rsq.cond.phys
 #> [1] 0.9999791
 
-# NOTE: When using the function, you should change the path to your .txt files.
+# To diagnose the measurements of terminal velocity:
+# NOTE: When using the function, you should change the path to your vtobj.Rdata file.
+load(file = paste0(.libPaths()[which("velocimeter"%in%list.files(.libPaths()))],"/velocimeter/extdata/vtobj.Rdata"))
+absdiff.veloc(obj = vtobj[[1]])
+#>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+#> 0.01140 0.01726 0.03467 0.03952 0.06273 0.07818
 ```
