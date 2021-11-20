@@ -112,4 +112,7 @@ load(file = paste0(.libPaths()[which("velocimeter"%in%list.files(.libPaths()))],
 absdiff.veloc(obj = vtobj[[1]])
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 #> 0.01140 0.01726 0.03467 0.03952 0.06273 0.07818
+rmse.veloc(obj = vtobj[[1]])
+#>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+#> 0.01140 0.01726 0.03467 0.03952 0.06273 0.07818
 ```

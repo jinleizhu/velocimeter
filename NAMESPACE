@@ -2,3 +2,4 @@
 
 export(absdiff.veloc)
 export(calculate.terminal.velocity.phys)
+export(rmse.veloc)

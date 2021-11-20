@@ -48,5 +48,6 @@ min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
 # NOTE: When using the function, you should change the path to your vtobj.Rdata file.
 load(file = paste0(.libPaths()[which("velocimeter"%in%list.files(.libPaths()))],"/velocimeter/extdata/vtobj.Rdata"))
 absdiff.veloc(obj = vtobj[[1]])
+rmse.veloc(obj = vtobj[[1]])
 
 ```
