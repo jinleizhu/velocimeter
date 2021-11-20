@@ -82,11 +82,11 @@ calculate.terminal.velocity.phys <- function(file,min.size,min.circularity,fps=1
     if (summary(linfit)$r.squared<0.999) {
       message<-paste(message,"Warning: seed may not yet have reached terminal velocity",sep="  ")
     }
-    vt.lin<- (-coef(linfit)[2])*0.01 # in m/s
+    vt.lin<- (-coef(linfit)[2]) # in m/s
 
     # method 2: calculate vt with the physical model of free fall with air resistance
     # Equation (2.58) from “Classical Mechanics” by John R. Taylor
-    z.obs<- -(tubelength-imagedat$z*0.01) # adding the 0/0 point not necessary; all in m now
+    z.obs<- -(tubelength-imagedat$z)
     ts<-imagedat$t
     dats <- data.frame(t=ts,z.obs=z.obs)
     # fit the physical model for free fall with air resistance:
@@ -97,7 +97,7 @@ calculate.terminal.velocity.phys <- function(file,min.size,min.circularity,fps=1
     rsq.cond.phys <- (1 - var(residuals(physfit))/var(dats$z.obs))
 
     if (z0.phys > 0.1) {
-      message<-paste("Warning: Z0 10cm or larger",message,sep="  ")
+      message<-paste("Warning: Z0 0.1 m or larger",message,sep="  ")
     }
   }
   # save the results

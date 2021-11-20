@@ -12,6 +12,5 @@
 #' load(file = paste0(.libPaths()[which("velocimeter"%in%list.files(.libPaths()))],"/velocimeter/extdata/vtobj.Rdata"))
 #' rmse.veloc(obj = vtobj[[1]])
 rmse.veloc <- function(obj) {
-  sqrt(mean(((diff(fitted(obj$physfit))-diff(obj$imagedat$z/100))/diff(obj$imagedat$t))^2))
+  sqrt(mean(((diff(fitted(obj$physfit))-diff(obj$imagedat$z))/diff(obj$imagedat$t))^2))
 }
-

@@ -3,3 +3,6 @@
 export(absdiff.veloc)
 export(calculate.terminal.velocity.phys)
 export(rmse.veloc)
+export(xcalib)
+export(ycalib)
+export(zcalib)

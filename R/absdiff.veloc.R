@@ -13,5 +13,5 @@
 #' absdiff.veloc(obj = vtobj[[1]])
 
 absdiff.veloc <- function(obj) {
-  summary(abs(diff(fitted(obj$physfit))-diff(obj$imagedat$z/100))/diff(obj$imagedat$t))
+  summary(abs(diff(fitted(obj$physfit))-diff(obj$imagedat$z))/diff(obj$imagedat$t))
 }

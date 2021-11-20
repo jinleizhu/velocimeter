@@ -32,21 +32,25 @@ You can install the development version of velocimeter like so:
 
 ## Example
 
-This is a basic example which shows you how to calculate terminal velocity using
-the physical model for free fall with air resistance, and how to diagnose the
-measurements of terminal velocity.
+This is a basic example which shows you how to 1) convert image coordinates to
+real coordinates in 3-d space, 2) calculate terminal velocity using the physical
+model for free fall with air resistance, and 3) diagnose the measurements of
+terminal velocity.
 
 ```{r example}
 library(velocimeter)
+# 1) convert image coordinates to real coordinates in 3-d space
+datx <- read.csv(file = paste0(system.file(package = "velocimeter"),"/extdata/datx.csv"),header = TRUE)
+xcalib(dat=datx)
+
+# 2) calculate terminal velocity using the physical model for free fall with air resistance
 # NOTE: When using the function, you should change the path to your .txt files.
-calculate.terminal.velocity.phys(file =
-paste0(.libPaths()[which("velocimeter"%in%list.files(.libPaths()))],
-"/velocimeter/extdata/agri-short_00000.aviResults.txt"),
+calculate.terminal.velocity.phys(file = paste0(system.file(package = "velocimeter"),"/extdata/agri-short_00000.aviResults.txt"),
 min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
 
-# To diagnose the measurements of terminal velocity:
+# 3) diagnose the measurements of terminal velocity:
 # NOTE: When using the function, you should change the path to your vtobj.Rdata file.
-load(file = paste0(.libPaths()[which("velocimeter"%in%list.files(.libPaths()))],"/velocimeter/extdata/vtobj.Rdata"))
+load(file = paste0(system.file(package = "velocimeter"),"/extdata/vtobj.Rdata"))
 absdiff.veloc(obj = vtobj[[1]])
 rmse.veloc(obj = vtobj[[1]])
 
