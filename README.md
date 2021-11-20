@@ -40,7 +40,7 @@ min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
 #> $linfit
 #> 
 #> Call:
-#> lm(formula = y ~ t, data = imagedat)
+#> lm(formula = z ~ t, data = imagedat)
 #> 
 #> Coefficients:
 #> (Intercept)            t  
@@ -49,17 +49,17 @@ min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
 #> 
 #> $physfit
 #> Nonlinear regression model
-#>   model: y.obs ~ y0 - exp(logvt)^2/9.80665 * log(cosh(9.80665 * (t)/exp(logvt)))
+#>   model: z.obs ~ z0 - vt^2/9.80665 * log(cosh(9.80665 * t/vt))
 #>    data: dats
-#>   logvt      y0 
-#> 1.86013 0.04759 
+#>      vt      z0 
+#> 6.42460 0.04759 
 #>  residual sum-of-squares: 1.379e-06
 #> 
-#> Number of iterations to convergence: 4 
-#> Achieved convergence tolerance: 2.261e-06
+#> Number of iterations to convergence: 6 
+#> Achieved convergence tolerance: 4.288e-07
 #> 
 #> $imagedat
-#>    Slice Area       xf      yf Circ.    AR Round Solidity Area.mirror      xm
+#>    Slice Area       xd      zd Circ.    AR Round Solidity Area.mirror      ym
 #> 1     51   71 1327.542   2.627 0.624 2.152 0.465    0.877         388 332.575
 #> 2     52  558 1329.828  87.783 0.635 1.801 0.555    0.913         395 335.791
 #> 3     53  600 1331.513 188.575 0.645 1.720 0.581    0.900         482 340.351
@@ -70,7 +70,7 @@ min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
 #> 8     58  694 1335.086 711.333 0.581 1.579 0.633    0.886         551 357.170
 #> 9     59  694 1334.718 819.187 0.583 1.590 0.629    0.898         539 360.760
 #> 10    60  697 1334.705 928.236 0.628 1.589 0.629    0.897         532 364.205
-#>         ym Circ..mirror AR.mirror Round.mirror Solidity.mirror        x
+#>         zm Circ..mirror AR.mirror Round.mirror Solidity.mirror        x
 #> 1  155.304        0.483     1.185        0.844           0.802 14.40693
 #> 2  227.495        0.328     1.103        0.906           0.793 14.49167
 #> 3  300.529        0.222     1.151        0.869           0.700 14.56948
@@ -82,23 +82,23 @@ min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
 #> 9  764.038        0.166     1.241        0.806           0.667 14.80028
 #> 10 844.870        0.190     1.174        0.852           0.712 14.82401
 #>           y        z         t
-#> 1  40.89291 11.16985 0.3923077
-#> 2  38.31133 11.29645 0.4000000
-#> 3  35.55988 11.47061 0.4076923
-#> 4  32.77185 11.60386 0.4153846
-#> 5  29.96301 11.70218 0.4230769
-#> 6  27.12686 11.85851 0.4307692
-#> 7  24.24498 12.00176 0.4384615
-#> 8  21.35527 12.10445 0.4461538
-#> 9  18.44418 12.23554 0.4538462
-#> 10 15.51324 12.36264 0.4615385
+#> 1  11.16985 40.89291 0.3923077
+#> 2  11.29645 38.31133 0.4000000
+#> 3  11.47061 35.55988 0.4076923
+#> 4  11.60386 32.77185 0.4153846
+#> 5  11.70218 29.96301 0.4230769
+#> 6  11.85851 27.12686 0.4307692
+#> 7  12.00176 24.24498 0.4384615
+#> 8  12.10445 21.35527 0.4461538
+#> 9  12.23554 18.44418 0.4538462
+#> 10 12.36264 15.51324 0.4615385
 #> 
 #> $vt.phys.mps
-#>    logvt 
+#>       vt 
 #> 6.424604 
 #> 
-#> $y0.phys.m
-#>         y0 
+#> $z0.phys.m
+#>         z0 
 #> 0.04758519 
 #> 
 #> $rsq.cond.phys
