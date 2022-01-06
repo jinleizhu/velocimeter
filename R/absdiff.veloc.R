@@ -13,5 +13,11 @@
 #' absdiff.veloc(obj = vtobj[[1]])
 
 absdiff.veloc <- function(obj) {
+  x <- obj$imagedat$t[-1]
+  y <- abs(diff(fitted(obj$physfit))-diff(obj$imagedat$z))
+  plot(x,y,
+       type="b",
+       xlab="Time (s)",
+       ylab="Velocity difference (m/s)")
   summary(abs(diff(fitted(obj$physfit))-diff(obj$imagedat$z))/diff(obj$imagedat$t))
 }

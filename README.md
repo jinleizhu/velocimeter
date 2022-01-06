@@ -134,8 +134,11 @@ min.size = 10,min.circularity = 0.05,fps = 130,tubelength = 1.075)
 # NOTE: When using the function, you should change the path to your vtobj.Rdata file.
 load(file = paste0(system.file(package = "velocimeter"),"/extdata/vtobj.Rdata"))
 absdiff.veloc(obj = vtobj[[1]])
-#>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#> 0.01140 0.01726 0.03467 0.03952 0.06273 0.07818
-rmse.veloc(obj = vtobj[[1]])
-#> [1] 0.04662084
 ```
+
+<img src="man/figures/README-example-1.png" width="100%" />
+
+    #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    #> 0.01140 0.01726 0.03467 0.03952 0.06273 0.07818
+    rmse.veloc(obj = vtobj[[1]])
+    #> [1] 0.04662084
